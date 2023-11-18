@@ -4,14 +4,14 @@
 #
 server.name: kibana
 server.host: 0.0.0.0
-elasticsearch.hosts: [ http://192.168.43.152:9200 ]
+elasticsearch.hosts: [ http://es01:9200,http://es02:9200,http://es03:9200 ]
 
 monitoring.ui.container.elasticsearch.enabled: true
 monitoring.ui.container.logstash.enabled: true
 
 ## X-Pack security credentials
 #
-elasticsearch.username: kibana_system
+elasticsearch.username: elastic
 elasticsearch.password: ${KIBANA_SYSTEM_PASSWORD}
 
 ## Encryption keys (optional but highly recommended)
