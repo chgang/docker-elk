@@ -4,15 +4,25 @@
 #
 server.name: kibana
 server.host: 0.0.0.0
-elasticsearch.hosts: [ http://es01:9200,http://es02:9200,http://es03:9200 ]
+elasticsearch.hosts: [ https://es01:9200,https://es02:9200,https://es03:9200 ]
 
 monitoring.ui.container.elasticsearch.enabled: true
 monitoring.ui.container.logstash.enabled: true
 
 ## X-Pack security credentials
 #
+xpack.security.enabled: true
 elasticsearch.username: elastic
 elasticsearch.password: ${KIBANA_SYSTEM_PASSWORD}
+elasticsearch.ssl.certificateAuthorities: ["/usr/share/kibana/config/certs/elasticsearch-ca.pem"]
+
+server.ssl.enabled: true
+server.ssl.certificate: /usr/share/kibana/config/certs/kibana-server.crt
+server.ssl.key: /usr/share/kibana/config/certs/kibana-server.key
+
+xpack.encryptedSavedObjects.encryptionKey: encryptedSavedObjects09876543211234567890
+xpack.security.encryptionKey: encryptionKeySecurity09876543211234567890
+xpack.reporting.encryptionKey: encryptionKeyReporting09876543211234567890
 
 ## Encryption keys (optional but highly recommended)
 ##
