@@ -9,5 +9,77 @@ curl -XPOST elastic:elastic "http://localhost:9200/_security/user/dev_elastic" \
 "roles": ["superuser"]
 }'
 
-# 申请crt文件
+##### 申请crt文件
 openssl x509 -req -in kibana-server.csr -signkey kibana-server.key -out kibana-server.crt
+
+##### 创建拼音索引
+PUT /index_01
+```json
+{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "ik_smart_pinyin": {
+          "type": "custom",
+          "tokenizer": "ik_smart",
+          "filter": [
+            "my_pinyin",
+            "word_delimiter"
+          ]
+        },
+        "ik_max_word_pinyin": {
+          "type": "custom",
+          "tokenizer": "ik_max_word",
+          "filter": [
+            "my_pinyin",
+            "word_delimiter"
+          ]
+        }
+      },
+      "filter": {
+        "my_pinyin": {
+          "type": "pinyin",
+          "keep_first_letter": true,
+          "keep_separate_first_letter": true,
+          "keep_full_pinyin": true,
+          "keep_original": true,
+          "limit_first_letter_length": 16,
+          "lowercase": true
+        }
+      }
+    }
+  }
+}
+```
+
+POST /index_01/_mapping
+```json
+{
+  "properties": {
+    "title": {
+      "type": "text",
+      "analyzer": "ik_max_word_pinyin",
+      "search_analyzer": "ik_smart_pinyin"
+    },
+    "desc": {
+      "type": "text",
+      "analyzer": "ik_max_word_pinyin",
+      "search_analyzer": "ik_smart_pinyin"
+    },
+    "img": {
+      "type": "text"
+    },
+    "price": {
+      "type": "text"
+    }
+  }
+}
+```
+POST /index_01/_doc
+```json
+{
+  "title":"女式包",
+  "price":"22",
+  "desc":"包包，女人的最爱"
+}
+```

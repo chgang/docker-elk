@@ -10,6 +10,8 @@ RUN set -x \
     && yum install -y iputils nc vim libcurl telnet iputils-ping net-tools unzip openssl \
     && yum clean all
 ADD ./elasticsearch-analysis-ik-7.9.3.zip /usr/share/elasticsearch/plugins/ik/
+ADD ./elasticsearch-analysis-pinyin-7.9.3.zip /usr/share/elasticsearch/plugins/pinyin/
 
-RUN unzip /usr/share/elasticsearch/plugins/ik/elasticsearch-analysis-ik-7.9.3.zip -d /usr/share/elasticsearch/plugins/ik/
+RUN unzip /usr/share/elasticsearch/plugins/ik/elasticsearch-analysis-ik-7.9.3.zip -d /usr/share/elasticsearch/plugins/ik/ \
+    && unzip /usr/share/elasticsearch/plugins/pinyin/elasticsearch-analysis-pinyin-7.9.3.zip -d /usr/share/elasticsearch/plugins/pinyin/
 ADD ./config/java.policy /usr/share/elasticsearch/jdk/conf/security
